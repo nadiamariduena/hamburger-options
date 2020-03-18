@@ -1,0 +1,242 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #fdebd0;
+  overflow-x: hidden;
+}
+
+/* ------------------------------ */
+
+header {
+  height: 90px;
+  display: block;
+}
+
+nav {
+  padding-top: 15px;
+  height: 40px;
+
+  /*
+if i add the display flex, its not going to show
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; /*if i add space-around, its going to position it nearly at the center and obviously the toggle is going to show horribly, thats because i set the toggle to be hidden in the right side  */
+}
+
+/*---------DROPDOWN-------------*/
+
+#menuToggle-nav {
+  display: block;
+  position: relative;
+  top: 0px; /*will position it right on top*/
+  left: 20px;
+
+  z-index: 1;
+
+  /* ------------------------ */
+  user-select: none;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10+ and Edge */
+  user-select: none; /* Standard syntax */
+  /* 
+  The text of this div element cannot be selected. If you double-click me, my text will not be highlighted.Example:
+  https://www.w3schools.com/cssref/tryit.asp?filename=trycss3_user-select
+    */
+}
+
+#menuToggle-nav input {
+  display: block;
+  width: 40px;
+  height: 32px;
+  position: absolute;
+  /* sin esto no funcionara, because it will position the toggle box more
+  to the bottom, but the input is there only invisible,when you hover on it and click it, it will open the toggle */
+  top: -7px;
+  left: -5px;
+
+  cursor: pointer;
+
+  opacity: 0;
+  /* sin esto hay un cubo blanco que se forma en lugar de las tres lineas del hamburguer*/
+  z-index: 2;
+  /* Esto es lo que position el hamburger in front of the nav that is in z-index 1 */
+  -webkit-touch-callout: none;
+  /* 
+if i want to click in a link that will open a toggle, this -webkit-touch-callout: none; is not
+going to let me !
+
+  video example: https://www.youtube.com/watch?v=lng4hDyYGI4
+
+  https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-touch-callout*/
+}
+
+/*
+* HAMBURGUER COLORS
+*/
+#menuToggle-nav span {
+  display: block;
+  width: 33px;
+  /* largeur of the border of the hamburguer*/
+  height: 4px;
+  /*size of the border of the hamburguer*/
+  margin-bottom: 5px;
+  /*cambia la forma de la X al cerrar el menu */
+  position: relative;
+
+  background: black;
+  border-radius: 3px;
+
+  z-index: 1; /*means its going to show on front of everything*/
+
+  transform-origin: 4px 0px;
+  /*cambia la forma de la X al cerrar el menu*/
+
+  transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1),
+    background 0.5s cubic-bezier(0.77, 0.2, 0.05, 1), opacity 0.55s ease;
+}
+
+/* ----------**------------------- */
+/* If you delete these two, you will see how weird is the form of the x
+or span lines when clickng on it */
+
+#menuToggle-nav span:first-child {
+  transform-origin: 0% 0%;
+}
+
+#menuToggle-nav span:nth-last-child(2) {
+  transform-origin: 0% 100%;
+}
+/* -----------**------------------ */
+/* 
+* Transform all the slices of hamburger
+* into a crossmark.
+*/
+
+#menuToggle-nav input:checked ~ span {
+  opacity: 1;
+  transform: rotate(45deg) translate(-2px, -1px);
+  /*el movimiento de 
+  la cross o X al hacer click*/
+  background: #232323;
+}
+
+/*
+* Este child hace que al hacer click, la linea del centro desaparezca.
+*/
+#menuToggle-nav input:checked ~ span:nth-last-child(3) {
+  opacity: 0;
+  transform: rotate(0deg) scale(0.2, 0.2);
+}
+
+/*
+* Esta ultima va al sentido contrario when clicking the lines
+*/
+#menuToggle-nav input:checked ~ span:nth-last-child(2) {
+  transform: rotate(-45deg) translate(0, -1px);
+}
+
+/*
+*----- Make this absolute positioned
+*------ at the top left of the screen
+*/
+
+#menu {
+  position: absolute;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 50%;
+  /*largeur of the inside the menu when open*/
+  margin: -50px 0 0 -50px;
+  height: 100vh;
+  opacity: 0.91;
+
+  background: #243c31;
+  /*color inside the menu when open*/
+  list-style-type: none;
+  -webkit-font-smoothing: antialiased;
+  /* to stop flickering of text in safari see example:
+  https://github.com/vlachoudis/bCNC/issues/986
+  */
+
+  transform-origin: 0% 0%; /* defines where a transform originates from, in this case, top and left are set to 0
+  more:
+  https://alligator.io/css/transform-origin-property/
+  
+  */
+  transform: translate(-100%, 0);
+
+  /* the cubic-bezier is the same i use when controlling the speed in
+  after effects, so its that little curve that makes magic happens */
+  transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
+}
+
+#menu li {
+  font-family: "Rajdhani-Light";
+
+  padding: 6px 0;
+  /*Espacio entre los links inside del menu*/
+
+  font-size: 20px;
+  color: #d9c2aa;
+}
+
+/*HOVER NO FUNCIONA EN SMALL DEVICES*/
+
+#menu li:hover {
+  font-family: "Rajdhani-Light";
+  padding: 6px 0;
+  /*espacio entre los links inside del menu*/
+  font-size: 21px;
+  color: white;
+}
+#menu a {
+  text-decoration: none;
+}
+/*
+* And let's slide it in, from the left
+*/
+#menuToggle-nav input:checked ~ ul {
+  transform: none;
+}
+
+/*
+The tilde or following sibling selector*** ALLOWS the styling of
+ an element that's a SIBLING of ANOTHER, but it has to come after, but its a bit tricky 
+ to understand in the beginning, when you look at the example:
+
+
+.a ~ .b {
+  background-color: powderblue;
+}
+--------------
+
+<ul>
+  <li class="b">1st</li>
+  <li class="a">2nd</li>
+  <li>3rd</li>
+  <li class="b">4th</li>
+  <li class="b">5th</li>
+</ul>
+---------------
+1st
+2nd
+3rd
+4th //colored
+5th //colored
+
+//ONLY the last two will be in color, and that is because,it took the elements after the 'a'.
+
+*/
+
+/*-------------------------------*/
